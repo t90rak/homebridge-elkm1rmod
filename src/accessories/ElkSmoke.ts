@@ -1,37 +1,42 @@
-'use strict';
-
-'use strict';
-import { PlatformAccessory } from 'homebridge';
-import { ElkInput } from './ElkInput';
+import { Service, Characteristic, PlatformAccessory } from 'homebridge';
 import { ElkM1Platform } from '../platform';
 
-export class ElkSmoke extends ElkInput {
+export class ElkSmoke {
+  private service: Service;
 
-    constructor(
-        protected readonly platform: ElkM1Platform,
-        protected readonly accessory: PlatformAccessory,
-    ) {
-        super(platform, accessory);
-        this.service = accessory.getService(platform.Service.SmokeSensor) ||
-        accessory.addService(platform.Service.SmokeSensor);
+  constructor(
+    private readonly platform: ElkM1Platform,
+    private readonly accessory: PlatformAccessory,
+    private readonly zone: any,
+  ) {
+    const { Service, Characteristic } = this.platform.api.hap;
 
-        // set accessory information
-        this.accessory.getService(this.platform.Service.AccessoryInformation)!
-            .setCharacteristic(this.platform.Characteristic.Model, 'Smoke zone');
+    this.accessory.getService(Service.AccessoryInformation)!
+      .setCharacteristic(Characteristic.Manufacturer, 'Elk Products')
+      .setCharacteristic(Characteristic.Model, 'M1 Smoke Zone')
+      .setCharacteristic(Characteristic.SerialNumber, `Zone-${zone.zoneNumber}`);
 
-        const itemName = (typeof this.accessory.context.device.name !== 'undefined') ? this.accessory.context.device.name :
-            `Smoke ${this.accessory.context.device.id}`;
+    this.service = this.accessory.getService(Service.SmokeSensor) ||
+      this.accessory.addService(Service.SmokeSensor);
 
-        this.service.setCharacteristic(this.platform.Characteristic.Name, itemName);
+    this.service.setCharacteristic(Characteristic.Name, zone.name);
 
-        this.service.getCharacteristic(this.platform.Characteristic.SmokeDetected)
-            .onGet(this.getContact.bind(this));
+    // Initial state
+    const initialState = zone.state === 'secure'
+      ? Characteristic.SmokeDetected.SMOKE_NOT_DETECTED
+      : Characteristic.SmokeDetected.SMOKE_DETECTED;
 
-        this.service.getCharacteristic(this.platform.Characteristic.StatusTampered)
-            .onGet(this.getTamper.bind(this));
-    }
+    this.service.setCharacteristic(Characteristic.SmokeDetected, initialState);
 
-    updateContactState(state: boolean) {
-        this.service!.updateCharacteristic(this.platform.Characteristic.SmokeDetected, state);
-    }
+    // Listen for zone changes
+    this.platform.elkClient.onZoneChange((updatedZone: any) => {
+      if (updatedZone.zoneNumber === zone.zoneNumber) {
+        const smokeState = updatedZone.state === 'secure'
+          ? Characteristic.SmokeDetected.SMOKE_NOT_DETECTED
+          : Characteristic.SmokeDetected.SMOKE_DETECTED;
+
+        this.service.updateCharacteristic(Characteristic.SmokeDetected, smokeState);
+      }
+    });
+  }
 }
