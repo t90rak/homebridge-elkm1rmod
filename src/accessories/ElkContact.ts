@@ -1,34 +1,34 @@
-'use strict';
-import { PlatformAccessory } from 'homebridge';
-import { ElkInput } from './ElkInput';
+import { Service, Characteristic, PlatformAccessory } from 'homebridge';
 import { ElkM1Platform } from '../platform';
 
-export class ElkContact extends ElkInput {
+export class ElkContact {
+  private service: Service;
 
-    constructor(
-        protected readonly platform: ElkM1Platform,
-        protected readonly accessory: PlatformAccessory,
-    ) {
-        super(platform, accessory);
-        this.service = accessory.getService(platform.Service.ContactSensor) ||
-        accessory.addService(platform.Service.ContactSensor);
+  constructor(
+    private readonly platform: ElkM1Platform,
+    private readonly accessory: PlatformAccessory,
+    private readonly zone: any,
+  ) {
+    const { Service, Characteristic } = this.platform.api.hap;
 
-        /* this.contactCharacteristic = platform.Characteristic.ContactSensorState;
-        this.tamperCharacteristic = platform.Characteristic.StatusTampered;*/
+    this.accessory.getService(Service.AccessoryInformation)!
+      .setCharacteristic(Characteristic.Manufacturer, 'Elk Products')
+      .setCharacteristic(Characteristic.Model, 'M1 Zone')
+      .setCharacteristic(Characteristic.SerialNumber, `Zone-${zone.zoneNumber}`);
 
-        // set accessory information
-        this.accessory.getService(this.platform.Service.AccessoryInformation)!
-            .setCharacteristic(this.platform.Characteristic.Model, 'Contact zone');
+    this.service = this.accessory.getService(Service.ContactSensor) ||
+      this.accessory.addService(Service.ContactSensor);
 
-        const itemName = (typeof this.accessory.context.device.name !== 'undefined') ? this.accessory.context.device.name :
-            `Contact ${this.accessory.context.device.id}`;
+    this.service.setCharacteristic(Characteristic.Name, zone.name);
 
-        this.service.setCharacteristic(this.platform.Characteristic.Name, itemName);
+    this.platform.elkClient.onZoneChange((updatedZone: any) => {
+      if (updatedZone.zoneNumber === zone.zoneNumber) {
+        const contactState = updatedZone.state === 'secure'
+          ? Characteristic.ContactSensorState.CONTACT_DETECTED
+          : Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
 
-        this.service.getCharacteristic(this.platform.Characteristic.ContactSensorState)
-            .onGet(this.getContact.bind(this));
-
-        this.service.getCharacteristic(this.platform.Characteristic.StatusTampered)
-            .onGet(this.getTamper.bind(this));
-    }
+        this.service.updateCharacteristic(Characteristic.ContactSensorState, contactState);
+      }
+    });
+  }
 }
