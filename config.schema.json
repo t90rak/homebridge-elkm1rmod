@@ -1,183 +1,113 @@
 {
-	"pluginAlias": "ElkM1",
-	"pluginType": "platform",
-	"singular": false,
-	"schema": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"title": "Name",
-				"type": "string",
-				"required": true
-			},
-			"elkAddress": {
-				"title": "ELK M1 IP Address",
-				"type": "string",
-				"format": "ipv4",
-				"required": true
-			},
-			"elkPort": {
-				"title": "Elk M1 port",
-				"type": "integer",
-				"default": 2101,
-				"required": true
-			},
-			"secure": {
-				"title":"Secure connection",
-				"type": "boolean",
-				"required":true
-			},
-			"area": {
-				"title": "Area",
-				"type": "integer",
-				"default": 1,
-				"minimum": 1,
-				"maximum": 8,
-				"required": true
-			},
-			"keypadCode": {
-				"title": "Keypad code",
-				"type": "integer",
-				"required": true
-			},
-			"zoneTypes": {
-				"type": "array",
-				"required": true,
-				"items": {
-					"title": "Zone",
-					"type": "object",
-					"properties": {
-						"zoneNumber": {
-							"title": "Zone number",
-							"type": "integer",
-							"required": true
-						},
-						"zoneType": {
-							"title": "Zone type",
-							"type": "string",
-							"oneOf": [
-								{
-									"title": "Contact",
-									"enum": [
-										"contact"
-									]
-								},
-								{
-									"title": "Normally closed contact",
-									"enum": [
-										"ncContact"
-									]
-								},
-								{
-									"title": "Normally open contact",
-									"enum": [
-										"noContact"
-									]
-								},
-								{
-									"title": "Garage",
-									"enum": [
-										"garage"
-									]
-								},
-								{
-									"title": "Motion",
-									"enum": [
-										"motion"
-									]
-								},
-								{
-									"title": "Normally closed motion",
-									"enum": [
-										"ncMotion"
-									]
-								},
-								{
-									"title": "Normally open motion",
-									"enum": [
-										"noMotion"
-									]
-								},
-								{
-									"title": "Smoke",
-									"enum": [
-										"smoke"
-									]
-								},
-								{
-									"title": "Normally closed smoke",
-									"enum": [
-										"ncSmoke"
-									]
-								},
-								{
-									"title": "Normally open smoke",
-									"enum": [
-										"noSmoke"
-									]
-								}
-							]
-						}
-					}
-				}
-			},
-			"garageDoors": {
-				"type": "array",
-				"required": false,
-				"items": {
-					"title": "Garage door",
-					"type": "object",
-					"properties": {
-						"name": {
-							"title": "Name",
-							"type": "string",
-							"required": true
-						},
-						"stateZone": {
-							"title": "State zone",
-							"type": "integer",
-							"required": true,
-							"description": "The zone that indicates whether the door is open or closed"
-						},
-						"obstructionZone": {
-							"title": "Obstruction zone",
-							"type": "integer",
-							"required": false,
-							"description": "The zone that indicates if the door is obstructed"
-						},
-						"openOutput": {
-							"title": "Open contact",
-							"type": "integer",
-							"required": true,
-							"description": "The contact (relay) that is pulsed to open the door"
-						},
-						"closeOutput": {
-							"title": "Close contact",
-							"type": "integer",
-							"required": true,
-							"description": "The contact (relay) that is pulsed to close the door"
-						}
-					}
-				}
-			},
-			"includedTasks": {
-				"title": "Included tasks",
-				"type": "array",
-				"items": {
-					"title": "Task number",
-					"type": "integer"
-				}
-			},
-			"includedOutputs": {
-				"title": "Included outputs",
-				"type": "array",
-				"items": {
-					"title": "Output number",
-					"type": "integer"
-				}
-			}
-		}
-	},
-	"form": null,
-	"display": null
+  "pluginAlias": "ElkM1",
+  "pluginType": "platform",
+  "type": "object",
+  "properties": {
+    "elkAddress": {
+      "type": "string",
+      "title": "Elk M1 IP Address",
+      "description": "The IP address of the Elk M1 panel (M1XEP interface).",
+      "placeholder": "192.168.1.100"
+    },
+    "elkPort": {
+      "type": "integer",
+      "title": "Elk M1 Port",
+      "description": "The port number used to connect to the Elk M1 panel.",
+      "default": 2101
+    },
+    "keypadCode": {
+      "type": "string",
+      "title": "Keypad Code",
+      "description": "The user code used to arm/disarm the panel.",
+      "placeholder": "1234"
+    },
+    "area": {
+      "type": "integer",
+      "title": "Area Number",
+      "description": "The area number to control (usually 1).",
+      "default": 1
+    },
+    "zoneTypes": {
+      "type": "array",
+      "title": "Zone Types",
+      "description": "Define the type of each zone to expose in HomeKit.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "zoneNumber": {
+            "type": "integer",
+            "title": "Zone Number",
+            "description": "The zone number (1–208)."
+          },
+          "zoneType": {
+            "type": "string",
+            "title": "Zone Type",
+            "description": "The type of zone.",
+            "enum": ["contact", "motion", "smoke", "garage", "input"]
+          }
+        },
+        "required": ["zoneNumber", "zoneType"]
+      }
+    },
+    "garageDoors": {
+      "type": "array",
+      "title": "Garage Doors",
+      "description": "Define garage door zones and outputs.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stateZone": {
+            "type": "string",
+            "title": "State Zone",
+            "description": "Zone number that indicates door open/closed."
+          },
+          "obstructionZone": {
+            "type": "string",
+            "title": "Obstruction Zone",
+            "description": "Zone number for obstruction detection (optional)."
+          },
+          "openOutput": {
+            "type": "string",
+            "title": "Open Output",
+            "description": "Output number to open the door."
+          },
+          "closeOutput": {
+            "type": "string",
+            "title": "Close Output",
+            "description": "Output number to close the door."
+          },
+          "name": {
+            "type": "string",
+            "title": "Garage Door Name",
+            "description": "Name of the garage door."
+          }
+        },
+        "required": ["stateZone", "openOutput", "closeOutput", "name"]
+      }
+    },
+    "includedTasks": {
+      "type": "array",
+      "title": "Included Tasks",
+      "description": "List of task numbers to expose in HomeKit.",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "includedOutputs": {
+      "type": "array",
+      "title": "Included Outputs",
+      "description": "List of output numbers to expose in HomeKit.",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "logElkData": {
+      "type": "boolean",
+      "title": "Log Raw Elk Data",
+      "description": "Enable logging of raw data received from Elk M1.",
+      "default": false
+    }
+  },
+  "required": ["elkAddress", "elkPort", "keypadCode", "area"]
 }
+
