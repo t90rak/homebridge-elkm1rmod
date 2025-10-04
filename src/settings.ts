@@ -1,9 +1,6 @@
 /**
- * This is the name of the platform that users will use to register the plugin in the Homebridge config.json
+ * Constants used throughout the plugin.
  */
-export const PLATFORM_NAME = 'ElkM1';
 
-/**
- * This must match the name of your plugin as defined the package.json
- */
-export const PLUGIN_NAME = 'homebridge-elkm1';
+export const PLUGIN_NAME = 'homebridge-elkm1rmod'; // Must match package.json
+export const PLATFORM_NAME = 'ElkM1RModPlatform';   // Used to register the platform in Homebridge
