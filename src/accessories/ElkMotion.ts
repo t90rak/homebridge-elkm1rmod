@@ -1,35 +1,42 @@
-'use strict';
-import { PlatformAccessory } from 'homebridge';
-import { ElkInput } from './ElkInput';
+import { Service, Characteristic, PlatformAccessory } from 'homebridge';
 import { ElkM1Platform } from '../platform';
 
-export class ElkMotion extends ElkInput {
+export class ElkMotion {
+  private service: Service;
 
-    constructor(
-        protected readonly platform: ElkM1Platform,
-        protected readonly accessory: PlatformAccessory,
-    ) {
-        super(platform, accessory);
+  constructor(
+    private readonly platform: ElkM1Platform,
+    private readonly accessory: PlatformAccessory,
+    private readonly zone: any,
+  ) {
+    const { Service, Characteristic } = this.platform.api.hap;
 
-        this.service = accessory.getService(platform.Service.MotionSensor) ||
-        accessory.addService(platform.Service.MotionSensor);
-        // set accessory information
-        this.accessory.getService(this.platform.Service.AccessoryInformation)!
-            .setCharacteristic(this.platform.Characteristic.Model, 'Motion zone');
+    this.accessory.getService(Service.AccessoryInformation)!
+      .setCharacteristic(Characteristic.Manufacturer, 'Elk Products')
+      .setCharacteristic(Characteristic.Model, 'M1 Motion Zone')
+      .setCharacteristic(Characteristic.SerialNumber, `Zone-${zone.zoneNumber}`);
 
-        const itemName = (typeof this.accessory.context.device.name !== 'undefined') ? this.accessory.context.device.name :
-            `Motion ${this.accessory.context.device.id}`;
+    this.service = this.accessory.getService(Service.MotionSensor) ||
+      this.accessory.addService(Service.MotionSensor);
 
-        this.service.setCharacteristic(this.platform.Characteristic.Name, itemName);
+    this.service.setCharacteristic(Characteristic.Name, zone.name);
 
-        this.service.getCharacteristic(this.platform.Characteristic.MotionDetected)
-            .onGet(this.getContact.bind(this));
+    // Initial state
+    const initialState = zone.state === 'secure'
+      ? Characteristic.MotionDetected.FALSE
+      : Characteristic.MotionDetected.TRUE;
 
-        this.service.getCharacteristic(this.platform.Characteristic.StatusTampered)
-            .onGet(this.getTamper.bind(this));
-    }
+    this.service.setCharacteristic(Characteristic.MotionDetected, initialState);
 
-    updateContactState(state: boolean) {
-        this.service!.updateCharacteristic(this.platform.Characteristic.MotionDetected, state);
-    }
+    // Listen for zone changes
+    this.platform.elkClient.onZoneChange((updatedZone: any) => {
+      if (updatedZone.zoneNumber === zone.zoneNumber) {
+        const motionState = updatedZone.state === 'secure'
+          ? Characteristic.MotionDetected.FALSE
+          : Characteristic.MotionDetected.TRUE;
+
+        this.service.updateCharacteristic(Characteristic.MotionDetected, motionState);
+      }
+    });
+  }
 }
