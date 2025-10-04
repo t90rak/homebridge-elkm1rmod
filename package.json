@@ -1,53 +1,50 @@
 {
-  "name": "homebridge-elkm1",
-  "version": "3.0.7",
-  "description": "Homebridge plugin for the Elk M1 alarm panel",
-  "main": "dist/index.js",
-  "scripts": {
-    "lint": "eslint src/**.ts --max-warnings=0",
-    "watch": "npm run build && npm link && nodemon",
-    "build": "rimraf ./dist && tsc",
-    "prepublishOnly": "npm run lint && npm run build"
-  },
+  "name": "homebridge-elkm1rmod",
+  "version": "4.0.0",
+  "description": "Homebridge plugin for Elk M1 using serial port and rM1XSP",
+  "license": "MIT",
+  "keywords": [
+    "homebridge-plugin",
+    "elkm1",
+    "rmod",
+    "security",
+    "alarm"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/paulw11/homebridge-elkm1.git"
+    "url": "https://github.com/t90rak/homebridge-elkm1rmod.git"
   },
-  "keywords": [
-    "homebridge-plugin"
-  ],
-  "author": "Paul Wilkinson",
-  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/paulw11/homebridge-elkm1/issues"
+    "url": "https://github.com/t90rak/homebridge-elkm1rmod/issues"
   },
   "engines": {
-    "node": ">=0.12.0",
-    "homebridge": ">=0.2.0"
+    "homebridge": "^1.6.0 || ^2.0.0",
+    "node": "^18.20.4 || ^20.15.1 || ^22"
   },
-  "homepage": "https://github.com/paulw11/homebridge-elkm1#readme",
-  "dependencies": {
-    "elkmon": "^1.2.4"
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ."
   },
-  "funding": [
+  "author": {
+    "name": "Rakesh",
+    "url": "https://github.com/t90rak"
+  },
+  "contributors": [
     {
-      "type": "github",
-      "url": "https://github.com/sponsors/paulw11"
-    },
-    {
-      "type": "paypal",
-      "url": "https://paypal.me/paulwilko"
+      "name": "Paul W (original author)",
+      "url": "https://github.com/paulw11"
     }
   ],
-  "devDependencies": {
-    "@types/node": "^14.14.31",
-    "@typescript-eslint/eslint-plugin": "^4.16.1",
-    "@typescript-eslint/parser": "^4.16.1",
-    "eslint": "^7.21.0",
-    "homebridge": "^1.3.1",
-    "nodemon": "^2.0.7",
-    "rimraf": "^3.0.2",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.2"
+  "dependencies": {
+    "serialport": "^10.5.0"
+  },
+  "peerDependencies": {
+    "homebridge": ">=1.6.0"
+  },
+  "homebridge": {
+    "pluginType": "platform",
+    "schema": "config.schema.json"
   }
 }
+
+
