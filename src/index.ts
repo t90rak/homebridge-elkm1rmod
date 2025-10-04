@@ -1,3 +1,8 @@
+/**
+ * Homebridge Plugin Entry Point
+ * Registers the ElkM1 platform with Homebridge
+ */
+
 import { API } from 'homebridge';
 import { ElkM1Platform } from './platform';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';

@@ -1,5 +1,42 @@
 Changelog
 =========
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+---
+
+## [4.0.0] - 2025-10-04
+
+### Added
+- Full compatibility with Homebridge 2.0
+- Updated `config.schema.json` with modern format and preserved layout
+- Polished `README.md` for Homebridge Verified status
+- Added enhanced `.gitignore` for TypeScript and Homebridge development
+- Improved `tsconfig.json` with type safety and performance flags
+- Updated `.eslintrc` with modern linting rules and type-aware checks
+- Validated `sample-config.json` against schema
+- Reviewed and confirmed correctness of `index.ts` and `settings.ts`
+
+### Changed
+- Removed deprecated ESLint presets
+- Added optional enhancements to `nodemon.json`
+
+---
+
+## [3.0.8] - 2024-12-12
+
+### Added
+- Initial support for garage door accessories
+- Logging option for raw Elk M1 data
+
+---
+
+## [3.0.0] - 2023-08-01
+
+### Added
+- First public release of `homebridge-elkm1rmod`
+- Support for Elk M1 zones, outputs, tasks, and arming/disarming
 
 3.0.6
 -----

@@ -1,12 +1,7 @@
 {
-  "watch": [
-    "src"
-  ],
+  "watch": ["src"],
   "ext": "ts",
-  "ignore": [],
-  "exec": "tsc && homebridge -I -D",
-  "signal": "SIGTERM",
-  "env": {
-    "NODE_OPTIONS": "--trace-warnings"
-  }
+  "ignore": ["dist", "node_modules"],
+  "delay": "500",
+  "exec": "ts-node --transpile-only src/index.ts"
 }

@@ -1,8 +1,15 @@
 {
-  "files.eol": "\n",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+  "eslint.options": {
+    "extensions": [".ts"]
   },
-  "editor.rulers": [ 140 ],
-  "eslint.enable": true
+  "eslint.validate": ["typescript"],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.exclude": {
+    "dist": true,
+    "node_modules": true
+  }
 }
