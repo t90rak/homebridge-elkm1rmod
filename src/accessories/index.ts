@@ -1,8 +1,8 @@
-export * from './ElkContact';
-export * from './ElkGarageDoor';
-export * from './ElkInput';
-export * from './ElkMotion';
-export * from './ElkOutput';
-export * from './ElkPanel';
-export * from './ElkSmoke';
-export * from './ElkTask';
+export { ElkContact } from './ElkContact';
+export { ElkGarageDoor } from './ElkGarageDoor';
+export { ElkInput } from './ElkInput';
+export { ElkMotion } from './ElkMotion';
+export { ElkOutput } from './ElkOutput';
+export { ElkPanel } from './ElkPanel';
+export { ElkSmoke } from './ElkSmoke';
+export { ElkTask } from './ElkTask';
