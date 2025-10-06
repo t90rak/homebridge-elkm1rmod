@@ -8,7 +8,7 @@ import Elk from 'elkmon';
 
 export class ElkM1Platform implements DynamicPlatformPlugin {
     public readonly Service: typeof Service = this.api.hap.Service;
-    public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
+    public readonly Characteristic: typeof Characteristic;
 
     // this is used to track restored cached accessories
     public readonly accessories: PlatformAccessory[] = [];
@@ -39,6 +39,9 @@ export class ElkM1Platform implements DynamicPlatformPlugin {
         public readonly config: PlatformConfig,
         public readonly api: API,
     ) {
+        this.Service = this.api.hap.Service;
+        this.Characteristic = this.api.hap.Characteristic;
+
         this.log.debug('Finished initializing platform:', this.config.name);
 
         this.elkAddress = this.config.elkAddress;
