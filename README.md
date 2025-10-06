@@ -2,6 +2,32 @@
 
 ## Homebridge plugin for the Elk M1 alarm panel
 
+![Homebridge 2.0 Compatible](https://img.shields.io/badge/Homebridge-2.0%20Compatible-brightgreen)
+
+> ⚡️ This plugin has been tested and verified to work with Homebridge v2.0 and above.
+
+
+🔧 Installation (Development Mode)
+To install the plugin from GitHub and link it to Homebridge:
+
+# Clone the repo
+git clone https://github.com/t90rak/homebridge-elkm1rmod.git
+cd homebridge-elkm1rmod
+
+# Install dependencies and build
+npm install
+npm run build
+
+# Link the plugin
+sudo /opt/homebridge/bin/npm link
+cd /var/lib/homebridge
+sudo /opt/homebridge/bin/npm link homebridge-elkm1rmod
+
+# Restart Homebridge
+sudo systemctl restart homebridge
+
+
+
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 [![BuyMeACoffee](https://img.shields.io/badge/coffee-donate-orange?logo=buy-me-a-coffee&logoColor=yellow)](https://www.buymeacoffee.com/paulw11)
 [![PayPal](https://img.shields.io/badge/paypal-donate-blue?logo=paypal)](https://paypal.me/paulwilko/)

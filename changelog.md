@@ -1,5 +1,16 @@
 Changelog
 =========
+## [3.0.9] - 2025-10-06
+### Added
+- Confirmed compatibility with Homebridge 2.0
+- Auto-relink script for plugin development in LXC environments
+
+### Changed
+- Updated `tsconfig.json` to target ES2021 for better compatibility
+- Improved plugin initialization logic for cleaner startup
+
+### Fixed
+- Resolved TypeScript build errors related to unsupported target/lib values
 
 3.0.6
 -----
