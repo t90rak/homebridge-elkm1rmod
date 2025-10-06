@@ -7,7 +7,7 @@ import Elk from 'elkmon';
 
 
 export class ElkM1Platform implements DynamicPlatformPlugin {
-    public readonly Service: typeof Service = this.api.hap.Service;
+    public readonly Service: typeof Service;
     public readonly Characteristic: typeof Characteristic;
 
     // this is used to track restored cached accessories
