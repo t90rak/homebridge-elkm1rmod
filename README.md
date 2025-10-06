@@ -1,4 +1,4 @@
-# homebridge-elkm1
+# homebridge-elkm1rmod
 
 ## Homebridge plugin for the Elk M1 alarm panel
 
