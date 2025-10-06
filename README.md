@@ -11,21 +11,28 @@
 To install the plugin from GitHub and link it to Homebridge:
 
 # Clone the repo
+\\\
 git clone https://github.com/t90rak/homebridge-elkm1rmod.git
 cd homebridge-elkm1rmod
+\\\
 
 # Install dependencies and build
+\\\
 npm install
 npm run build
+\\\
 
 # Link the plugin
+\\\
 sudo /opt/homebridge/bin/npm link
 cd /var/lib/homebridge
 sudo /opt/homebridge/bin/npm link homebridge-elkm1rmod
+\\\
 
 # Restart Homebridge
+\\\
 sudo systemctl restart homebridge
-
+\\\
 
 
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
