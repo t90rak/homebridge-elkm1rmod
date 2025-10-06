@@ -6,4 +6,4 @@ export const PLATFORM_NAME = 'ElkM1';
 /**
  * This must match the name of your plugin as defined the package.json
  */
-export const PLUGIN_NAME = 'homebridge-elkm1';
+export const PLUGIN_NAME = 'homebridge-elkm1rmod';
