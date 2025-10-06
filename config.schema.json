@@ -2,6 +2,8 @@
 	"pluginAlias": "ElkM1",
 	"pluginType": "platform",
 	"singular": false,
+	"headerDisplay": "Homebridge plugin for the Elk M1 alarm panel. Modified version with Homebridge 2.0 support.",
+	"footerDisplay": "For help and support visit: [GitHub](https://github.com/t90rak/homebridge-elkm1rmod)",
 	"schema": {
 		"type": "object",
 		"properties": {
